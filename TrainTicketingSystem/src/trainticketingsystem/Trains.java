@@ -1,0 +1,408 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package trainticketingsystem;
+import java.sql.ResultSetMetaData;
+import java.util.Vector;
+import javax.swing.table.DefaultTableModel;
+import java.sql.DriverManager;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javax.swing.JOptionPane;
+import trainticketingsystem.otherjavas.DBConnect;
+
+
+
+/**
+ * 
+ * 
+ *
+ * @author Mila
+ */
+public class Trains extends javax.swing.JFrame {
+
+    /**
+     * Creates new form Trains
+     */
+    public Trains() {
+         initComponents();
+          initComponents();
+          
+           try {  
+           //  Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
+           //  Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=lab10;integratedSecurity=true");  
+             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+             Connection connection = DriverManager.getConnection( "jdbc:sqlserver://localhost:1433;user=sa;password=9803;" +
+            "databaseName=TrainTicketingSystem;");
+            
+   
+               Statement statement = connection.createStatement();  
+               
+             ResultSet rs = statement.executeQuery("Select * from traindetails"); 
+             ResultSetMetaData  rsmetadata = rs.getMetaData(); 
+              int  columns = rsmetadata.getColumnCount();   
+              DefaultTableModel dtm = new DefaultTableModel(); 
+              Vector columns_name=new Vector();
+              Vector data_rows=new Vector();
+              for(int  i= 1; i < columns+1; i++)  
+                {             
+                        columns_name.addElement (rsmetadata.getColumnLabel(i));  
+                }                 
+              
+              dtm.setColumnIdentifiers(columns_name);
+                   while (rs.next())  
+           {  
+               data_rows = new Vector(); 
+               for (int j = 1; j <columns+1; j++)  
+               {  
+                   data_rows.addElement(rs.getString(j)) ;
+               }  
+               dtm.addRow(data_rows);  
+               
+       }   
+          traintable.setModel(dtm); 
+             
+         } catch (Exception e) {  
+             e.printStackTrace();  
+         }
+ 
+ 
+    
+
+
+       
+    }
+    
+        public Trains (String choice,String choicedestination,String choicedate) {
+         initComponents();
+         
+         try {  
+           //  Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");  
+           //  Connection connection = DriverManager.getConnection("jdbc:sqlserver://localhost:1433;databaseName=lab10;integratedSecurity=true");  
+             Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
+             Connection connection = DriverManager.getConnection( "jdbc:sqlserver://localhost:1433;user=sa;password=9803;" +
+            "databaseName=TrainTicketingSystem;");
+            
+   
+             Statement statement = connection.createStatement();  
+               
+             ResultSet rs = statement.executeQuery("SELECT traindetails.sourcestation,traindetails.trainid,traindetails.destinationstation,traindetails.quantity,ticketdetails.class,ticketdetails.price from traindetails inner join ticketdetails"
+                    + " on traindetails.trainid = ticketdetails.trainid where ((traindetails.sourcestation= '"+choice+"' and traindetails.destinationstation='"+choicedestination+"') and traindetails.ticketdate ='"+choicedate+"')"); 
+               
+               //ResultSet rs = statement.executeQuery("Select * from traindetails where ticketdate = '" + choicedate +"'");
+             ResultSetMetaData  rsmetadata = rs.getMetaData(); 
+              int  columns = rsmetadata.getColumnCount();   
+              DefaultTableModel dtm = new DefaultTableModel(); 
+              Vector columns_name=new Vector();
+              Vector data_rows=new Vector();
+              for(int  i= 1; i < columns+1; i++)  
+                {             
+                        columns_name.addElement (rsmetadata.getColumnLabel(i));  
+                }                 
+              
+              dtm.setColumnIdentifiers(columns_name);
+                   while (rs.next())  
+           {  
+               data_rows = new Vector(); 
+               for (int j = 1; j <columns+1; j++)  
+               {  
+                   data_rows.addElement(rs.getString(j)) ;
+               }  
+               dtm.addRow(data_rows);  
+               
+       }   
+          traintable.setModel(dtm); 
+             
+         } catch (Exception e) {  
+             e.printStackTrace();  
+         }
+ 
+    }
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    
+    
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        textJlabel = new javax.swing.JLabel();
+        choice = new javax.swing.JComboBox();
+        text2Jlabel = new javax.swing.JLabel();
+        choicedestination = new javax.swing.JComboBox();
+        text3Jlabel = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        traintable = new javax.swing.JTable();
+        ticketbooking = new javax.swing.JButton();
+        backbutton = new javax.swing.JButton();
+        text3label = new javax.swing.JLabel();
+        choicedate = new javax.swing.JComboBox();
+        selectbutton = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        textJlabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        textJlabel.setText("Choose your train location");
+        getContentPane().add(textJlabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 100, 250, 40));
+
+        choice.setBackground(new java.awt.Color(153, 153, 153));
+        choice.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dhaka", "Sylhet" }));
+        choice.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                choiceMouseClicked(evt);
+            }
+        });
+        choice.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                choiceActionPerformed(evt);
+            }
+        });
+        getContentPane().add(choice, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 140, 30));
+
+        text2Jlabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        text2Jlabel.setText("Choose your destination");
+        getContentPane().add(text2Jlabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 200, 260, 50));
+
+        choicedestination.setBackground(new java.awt.Color(153, 153, 153));
+        choicedestination.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Dhaka", "Sylhet" }));
+        choicedestination.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                choicedestinationMouseClicked(evt);
+            }
+        });
+        choicedestination.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                choicedestinationActionPerformed(evt);
+            }
+        });
+        getContentPane().add(choicedestination, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 270, 140, 30));
+
+        text3Jlabel.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        text3Jlabel.setText("Details Of Selected Trains");
+        getContentPane().add(text3Jlabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 304, 240, 50));
+
+        traintable.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        traintable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Station", "Destination", "Train Number", "Available", "Class", "Price"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(traintable);
+
+        getContentPane().add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(62, 367, 690, 120));
+
+        ticketbooking.setBackground(new java.awt.Color(153, 153, 153));
+        ticketbooking.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        ticketbooking.setText("Want To Book Ticket!");
+        ticketbooking.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                ticketbookingActionPerformed(evt);
+            }
+        });
+        getContentPane().add(ticketbooking, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 530, 350, 60));
+
+        backbutton.setBackground(new java.awt.Color(153, 153, 153));
+        backbutton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        backbutton.setText("Back To Start");
+        backbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                backbuttonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(backbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 620, 350, 60));
+
+        text3label.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        text3label.setText("Pick a date");
+        getContentPane().add(text3label, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 110, 110, 20));
+
+        choicedate.setBackground(new java.awt.Color(153, 153, 153));
+        choicedate.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "2.10.17" }));
+        choicedate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                choicedateActionPerformed(evt);
+            }
+        });
+        getContentPane().add(choicedate, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 150, 140, 30));
+
+        selectbutton.setBackground(new java.awt.Color(153, 153, 153));
+        selectbutton.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        selectbutton.setText("Select");
+        selectbutton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                selectbuttonActionPerformed(evt);
+            }
+        });
+        getContentPane().add(selectbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 260, 160, 50));
+
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/trainticketingsystem/2.jpg"))); // NOI18N
+        getContentPane().add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 1280, 800));
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void choiceMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choiceMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_choiceMouseClicked
+
+    private void choicedestinationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_choicedestinationMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_choicedestinationMouseClicked
+
+    private void choiceActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choiceActionPerformed
+        // TODO add your handling code here:
+       
+    }//GEN-LAST:event_choiceActionPerformed
+
+    private void choicedestinationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choicedestinationActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_choicedestinationActionPerformed
+
+    private void backbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backbuttonActionPerformed
+        // TODO add your handling code here:
+          Startpage st = new Startpage();
+          st.setVisible(true);
+    }//GEN-LAST:event_backbuttonActionPerformed
+
+    private void ticketbookingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ticketbookingActionPerformed
+        // TODO add your handling code here:
+            Tickets tc = new Tickets();
+            tc.setVisible(true);
+    }//GEN-LAST:event_ticketbookingActionPerformed
+
+    private void choicedateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_choicedateActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_choicedateActionPerformed
+
+    private void selectbuttonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_selectbuttonActionPerformed
+        // TODO add your handling code here:  code done here;
+       String source = (String)choice.getSelectedItem();
+    String destination = (String)choicedestination.getSelectedItem();
+    String date = (String)choicedate.getSelectedItem();
+    
+        DBConnect ne = new DBConnect();
+        Connection con = null ;
+        Statement st =null;
+        try{
+             con = ne.connectToDB();
+        }catch(Exception e)
+        {
+           System.out.println("Database Not Connected") ;
+        }
+        try{
+            st = con.createStatement();
+            
+        }catch(Exception e){
+            System.out.println("Statement Creation Problem");
+        }
+        try{
+           
+           String query = "SELECT traindetails.sourcestation,traindetails.destinationstation,traindetails.trainid,traindetails.quantity,ticketdetails.class,ticketdetails.price from traindetails inner join ticketdetails on traindetails.trainid = ticketdetails.trainid where ((traindetails.sourcestation= '"+source+"' and traindetails.destinationstation='"+destination+"') and traindetails.ticketdate ='"+date+"');" ;
+            //String query = "Select * from traindetails where ticketdate = '" + date +"'";
+                  //String query = "Select * from traindetails";
+            ResultSet rs = st.executeQuery(query);
+            System.out.println(source);
+               System.out.println(destination);
+                  System.out.println(date);
+            int n=0;
+            while(rs.next()){
+                n++;
+            }
+            if(n>0){
+                Trains window;
+                //ShowSearchResultByName window;
+                //window = new ShowSearchResultByName(Name);
+                //window = new Trains ();
+                 window = new Trains(source,destination,date);
+                //window = new Trains (destination);
+                //window = new Trains (date); 
+                window.setVisible(true);
+                this.setVisible(false);  
+                
+            }else{
+                JOptionPane.showMessageDialog(null, "Not Found");
+            }
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Catch Not Found");
+        }
+      
+  
+    
+ 
+    
+    }//GEN-LAST:event_selectbuttonActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(Trains.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(Trains.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(Trains.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(Trains.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                new Trains().setVisible(true);
+            }
+        });
+    }
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton backbutton;
+    private javax.swing.JComboBox choice;
+    private javax.swing.JComboBox choicedate;
+    private javax.swing.JComboBox choicedestination;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JButton selectbutton;
+    private javax.swing.JLabel text2Jlabel;
+    private javax.swing.JLabel text3Jlabel;
+    private javax.swing.JLabel text3label;
+    private javax.swing.JLabel textJlabel;
+    private javax.swing.JButton ticketbooking;
+    private javax.swing.JTable traintable;
+    // End of variables declaration//GEN-END:variables
+}
